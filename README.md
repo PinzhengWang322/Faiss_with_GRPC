@@ -22,7 +22,7 @@ python -m grpc_tools.protoc -I=pbschema --python_out=. --grpc_python_out=. data.
 
 此外，还需要在server.py的同级目录下加上train_PCA.npy文件，内容是多条内容的Bert编码构成的numpy矩阵，供faiss初始化PCA。
 
-#### 接口说明
+### 接口说明
 
 #### 新帖入库接口：
 
