@@ -22,9 +22,9 @@ python -m grpc_tools.protoc -I=pbschema --python_out=. --grpc_python_out=. data.
 
 此外，还需要在server.py的同级目录下加上train_PCA.npy文件，内容是多条内容的Bert编码构成的numpy矩阵，供faiss初始化PCA。
 
-###接口说明
+#### 接口说明
 
-###新帖入库接口：
+#### 新帖入库接口：
 
 add (Message_add(id, ebm)):
 
@@ -38,7 +38,7 @@ add (Message_add(id, ebm)):
 
 
 
-###删除旧项目接口：
+#### 删除旧项目接口：
 
 remove(Message_int(num))
 
@@ -50,7 +50,7 @@ remove(Message_int(num))
 
 
 
-###返回Faiss库中item总数接口：
+#### 返回Faiss库中item总数接口：
 
 get_size(Message_None())
 
@@ -62,7 +62,7 @@ get_size(Message_None())
 
 
 
-###根据历史ids召回topk项目：
+#### 根据历史ids召回topk项目：
 
 recall(Message_recall(his_ids , topk))
 
@@ -76,7 +76,7 @@ recall(Message_recall(his_ids , topk))
 
 
 
-###根据历史ids计算指定项目的得分：
+#### 根据历史ids计算指定项目的得分：
 
 cal_by_ids(Message_cal(his_ids, cal_ids)
 
