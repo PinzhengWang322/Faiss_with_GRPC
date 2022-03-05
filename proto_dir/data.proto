@@ -1,0 +1,37 @@
+syntax = "proto3";
+package faissrpc_service;
+
+service FaissService {
+    rpc add (Message_add) returns (Message_None){}
+    rpc get_size (Message_None) returns (Message_int){}
+    rpc recall_by_ids (Message_recall) returns (Message_json){}
+    rpc remove (Message_int) returns (Message_None){}
+    rpc cal_by_ids (Message_cal) returns (Message_json){}
+}
+
+message Message_add {
+    int64 id = 1;
+    string emb = 2;
+}
+
+message Message_None {
+}
+
+message Message_int {
+    int64 num = 1;
+}
+
+message Message_recall {
+    string his_ids = 1;
+    int32 topk = 2;
+}
+
+message Message_json {
+    string json_str = 1;
+}
+
+message Message_cal {
+    string his_ids = 1;
+    string cal_ids = 2;
+}
+
