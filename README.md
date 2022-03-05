@@ -32,7 +32,7 @@ add (Message_add(id, ebm)):
 
 输入参数：id(int64):新项目的id              
 
- 				  emb(str):新项目内容的Bert编码列表形式，以json形式存储
+        emb(str):新项目内容的Bert编码列表形式，以json形式存储
 
 返回值：None
 
