@@ -2,10 +2,10 @@ syntax = "proto3";
 package faissrpc_service;
 
 service FaissService {
-    rpc add (Message_add) returns (Message_None){}
+    rpc add (Message_add) returns (Message_tag){}
+    rpc remove (Message_int) returns (Message_tag){}
     rpc get_size (Message_None) returns (Message_int){}
     rpc recall_by_ids (Message_recall) returns (Message_json){}
-    rpc remove (Message_int) returns (Message_None){}
     rpc cal_by_ids (Message_cal) returns (Message_json){}
 }
 
@@ -35,3 +35,6 @@ message Message_cal {
     string cal_ids = 2;
 }
 
+message Message_tag {
+    string tag = 1;
+}
