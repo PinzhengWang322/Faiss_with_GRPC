@@ -42,14 +42,14 @@ class FaissServic(FaissServiceServicer):
             None
         """
         id = request.id
-        if id in self.item_emb: return Message_None()
+        if id in self.item_emb: return Message_tag(tag = str(request.id) + 'has been added')
         Bert_embedding = np.array([json.loads(request.emb)]).astype('float32')
         Bert_embedding = self.PCA.apply_py(Bert_embedding)
         self.item_emb[id] = Bert_embedding
         faiss.normalize_L2(Bert_embedding)
         self.index.add_with_ids(Bert_embedding, np.array((id,)).astype('int64'))
         
-        return Message_None()
+        return Message_tag(tag = 'add success')
 
     def remove(self, request, context):
         """ Remove the item with the input id
@@ -59,10 +59,10 @@ class FaissServic(FaissServiceServicer):
         Returns: 
             None
         """
-        if request.num not in self.item_emb: return
+        if request.num not in self.item_emb: return Message_tag(tag = str(request.num) + 'has not been added')
         # del self.item_emb[id]
         self.index.remove_ids(np.array([request.num], dtype=np.int64))
-        return Message_None()
+        return Message_tag(tag = 'remove success')
 
     def get_size(self, request, context):
         return Message_int(num = self.index.ntotal)
