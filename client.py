@@ -16,11 +16,15 @@ if __name__ == '__main__':
     for id in range(40000, 70000):
         emb = np.random.random([768])
         emb = json.dumps(emb.tolist())
-        client.add(Message_add(id = id, emb = emb))
+        result = client.add(Message_add(id = id, emb = emb))
+        if result.tag != 'add success':
+            raise RuntimeError('add fail!(may be this id has been already added)')
+        
 
     # show the number of items in Faiss
     result = client.get_size(Message_None())
     print(result)
+
 
     # recall 120 users' 200 items through their 2 latest history ids
     t1 = time.time()
@@ -31,11 +35,16 @@ if __name__ == '__main__':
     print("120 users' recall time:", t2 - t1)
     print(json.loads(out.json_str)[:3])
 
+
     # remove 10000 items from Faiss
     for id in range(60000, 70000):
-        client.remove(Message_int(num = id))
+        result = client.remove(Message_int(num = id))
+        if result.tag != 'remove success':
+            raise RuntimeError('remove fail!(may be this id has not been added)')
+    
     result = client.get_size(Message_None())
     print("after remove's size:", result)
+
 
     # cal 120 user's 200 items similarity with their history from Faiss
     cal_time = 0
