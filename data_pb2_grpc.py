@@ -17,7 +17,12 @@ class FaissServiceStub(object):
         self.add = channel.unary_unary(
                 '/faissrpc_service.FaissService/add',
                 request_serializer=data__pb2.Message_add.SerializeToString,
-                response_deserializer=data__pb2.Message_None.FromString,
+                response_deserializer=data__pb2.Message_tag.FromString,
+                )
+        self.remove = channel.unary_unary(
+                '/faissrpc_service.FaissService/remove',
+                request_serializer=data__pb2.Message_int.SerializeToString,
+                response_deserializer=data__pb2.Message_tag.FromString,
                 )
         self.get_size = channel.unary_unary(
                 '/faissrpc_service.FaissService/get_size',
@@ -28,11 +33,6 @@ class FaissServiceStub(object):
                 '/faissrpc_service.FaissService/recall_by_ids',
                 request_serializer=data__pb2.Message_recall.SerializeToString,
                 response_deserializer=data__pb2.Message_json.FromString,
-                )
-        self.remove = channel.unary_unary(
-                '/faissrpc_service.FaissService/remove',
-                request_serializer=data__pb2.Message_int.SerializeToString,
-                response_deserializer=data__pb2.Message_None.FromString,
                 )
         self.cal_by_ids = channel.unary_unary(
                 '/faissrpc_service.FaissService/cal_by_ids',
@@ -50,6 +50,12 @@ class FaissServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def remove(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def get_size(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -57,12 +63,6 @@ class FaissServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def recall_by_ids(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def remove(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -80,7 +80,12 @@ def add_FaissServiceServicer_to_server(servicer, server):
             'add': grpc.unary_unary_rpc_method_handler(
                     servicer.add,
                     request_deserializer=data__pb2.Message_add.FromString,
-                    response_serializer=data__pb2.Message_None.SerializeToString,
+                    response_serializer=data__pb2.Message_tag.SerializeToString,
+            ),
+            'remove': grpc.unary_unary_rpc_method_handler(
+                    servicer.remove,
+                    request_deserializer=data__pb2.Message_int.FromString,
+                    response_serializer=data__pb2.Message_tag.SerializeToString,
             ),
             'get_size': grpc.unary_unary_rpc_method_handler(
                     servicer.get_size,
@@ -91,11 +96,6 @@ def add_FaissServiceServicer_to_server(servicer, server):
                     servicer.recall_by_ids,
                     request_deserializer=data__pb2.Message_recall.FromString,
                     response_serializer=data__pb2.Message_json.SerializeToString,
-            ),
-            'remove': grpc.unary_unary_rpc_method_handler(
-                    servicer.remove,
-                    request_deserializer=data__pb2.Message_int.FromString,
-                    response_serializer=data__pb2.Message_None.SerializeToString,
             ),
             'cal_by_ids': grpc.unary_unary_rpc_method_handler(
                     servicer.cal_by_ids,
@@ -125,7 +125,24 @@ class FaissService(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/faissrpc_service.FaissService/add',
             data__pb2.Message_add.SerializeToString,
-            data__pb2.Message_None.FromString,
+            data__pb2.Message_tag.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def remove(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/faissrpc_service.FaissService/remove',
+            data__pb2.Message_int.SerializeToString,
+            data__pb2.Message_tag.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -160,23 +177,6 @@ class FaissService(object):
         return grpc.experimental.unary_unary(request, target, '/faissrpc_service.FaissService/recall_by_ids',
             data__pb2.Message_recall.SerializeToString,
             data__pb2.Message_json.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def remove(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/faissrpc_service.FaissService/remove',
-            data__pb2.Message_int.SerializeToString,
-            data__pb2.Message_None.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
