@@ -33,7 +33,7 @@ add (Message_add(id, ebm)):
 输入参数：id(int64):新项目的id              
         emb(str):新项目内容的Bert编码列表形式，以json形式存储
 
-返回值：None
+返回值：如果新增成功，返回Message_tag(tag = 'add success')
 
 
 
@@ -45,7 +45,7 @@ remove(Message_int(num))
 
 输入参数：num(int64):要删除的item的id
 
-返回值：None
+返回值：如果删除成功，返回Message_tag(tag = 'remove success')
 
 
 
