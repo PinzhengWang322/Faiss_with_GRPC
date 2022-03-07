@@ -5,7 +5,7 @@
 ### 编译proto
 
 ```
-python -m grpc_tools.protoc -I=pbschema --python_out=. --grpc_python_out=. data.proto
+python -m grpc_tools.protoc -I=proto_dir --python_out=. --grpc_python_out=. data.proto
 ```
 
 ### 使用
