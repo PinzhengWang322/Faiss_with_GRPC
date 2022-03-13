@@ -1,10 +1,11 @@
-
-(venv) peterlits@VM-0-16-ubuntu:~/wpz_home/Faiss$ python client.py 
+(venv) [***@**** Faiss]$ python client.py 
 num: 30000
 
-120 users' recall time: 0.6927657127380371
-[{'id': 53698, 'score': 0.9657861590385437}, {'id': 68666, 'score': 0.9657860994338989}, {'id': 63800, 'score': 0.9388890266418457}]
+120 users' recall time: 0.7001096534729004
+Format of the the first three items of the output: [{'id': 68879, 'score': 0.9623434543609619}, {'id': 49732, 'score': 0.9623432159423828}, {'id': 43318, 'score': 0.9343963265419006}]
 after remove's size: num: 20000
 
-120 users' cal time: 0.2558021545410156
-[{'id': 54572, 'score': 0.9026968479156494}, {'id': 46417, 'score': 0.8939345479011536}, {'id': 52269, 'score': 0.8702784180641174}]
+num: 20000
+
+120 users' cal time: 0.28165173530578613
+Format of the the first three items of the output: [{'id': 59212, 'score': 0.9031932353973389}, {'id': 53033, 'score': 0.889184296131134}, {'id': 46221, 'score': 0.9053615927696228}]74}]
