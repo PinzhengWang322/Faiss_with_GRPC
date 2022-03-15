@@ -12,7 +12,7 @@ client = FaissServiceStub(channel=channel)
 
 def add_new_items():
     # add 30000 items to Faiss
-    for id in range(40000, 70000):
+    for id in range(40000, 69999):
         emb = np.random.random([768])
         emb = json.dumps(emb.tolist())
         client.add(Message_add(id = id, emb = emb))
@@ -26,7 +26,7 @@ def recall_test():
     # recall 120 users' 200 items through their 2 latest history ids
     t1 = time.time()
     for i in range(120):
-        his_ids = json.dumps([random.randint(40000, 70000),random.randint(40000, 70000)])
+        his_ids = json.dumps([random.randint(40000, 69999),random.randint(40000, 69999)])
         out = client.recall_by_ids(Message_recall(his_ids = his_ids, topk = 200))
     t2 = time.time()
     print("120 users' recall time:", t2 - t1)
@@ -44,8 +44,8 @@ def calculate_simlarity_test():
     # cal 120 user's 200 items similarity with their history from Faiss
     cal_time = 0
     for i in range(120):
-        his_ids = json.dumps([random.randint(40000, 60000),random.randint(40000, 60000)])
-        cal_ids = json.dumps([random.randint(40000, 60000) for i in range(200)])
+        his_ids = json.dumps([random.randint(40000, 59999),random.randint(40000, 59999)])
+        cal_ids = json.dumps([random.randint(40000, 59999) for i in range(200)])
         t1 = time.time()
         out = client.cal_by_ids(Message_cal(his_ids = his_ids, cal_ids = cal_ids))
         t2 = time.time()
