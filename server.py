@@ -60,7 +60,7 @@ class FaissServic(FaissServiceServicer):
             None
         """
         if request.num not in self.item_emb: return Message_tag(tag = str(request.num) + 'has not been added')
-        # del self.item_emb[id]
+        del self.item_emb[request.num]
         self.index.remove_ids(np.array([request.num], dtype=np.int64))
         return Message_tag(tag = 'remove success')
 
