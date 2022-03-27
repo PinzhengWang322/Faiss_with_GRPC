@@ -6,6 +6,8 @@ from data_pb2 import *
 import faiss
 import numpy as np
 import json
+from log import g_log_inst
+g_log_inst.start('logs/test.log', 'INFO')
 
 HOST = "0.0.0.0"
 PORT = 3457
@@ -31,6 +33,7 @@ class FaissServic(FaissServiceServicer):
         self.index = faiss.IndexFlatIP(PCA_dim)
         self.index = faiss.IndexIDMap(self.index)
         print(X.shape,'init Done!')
+        g_log_inst._inst.info('init Done!')
 
     def add(self, request, context):
         """ Add one item's id and this item's Bert embedding
@@ -42,13 +45,17 @@ class FaissServic(FaissServiceServicer):
             None
         """
         id = request.id
-        if id in self.item_emb: return Message_tag(tag = str(request.id) + 'has been added')
+        if id in self.item_emb: 
+            g_log_inst._inst.warning(str(request.id) + 'has been added')
+            return Message_tag(tag = str(request.id) + 'has been added')
+
         Bert_embedding = np.array([json.loads(request.emb)]).astype('float32')
         Bert_embedding = self.PCA.apply_py(Bert_embedding)
         self.item_emb[id] = Bert_embedding
         faiss.normalize_L2(Bert_embedding)
         self.index.add_with_ids(Bert_embedding, np.array((id,)).astype('int64'))
         
+        g_log_inst._inst.info(str(request.id) + 'add success')
         return Message_tag(tag = 'add success')
 
     def remove(self, request, context):
@@ -59,12 +66,17 @@ class FaissServic(FaissServiceServicer):
         Returns: 
             None
         """
-        if request.num not in self.item_emb: return Message_tag(tag = str(request.num) + 'has not been added')
+        if request.num not in self.item_emb: 
+            g_log_inst._inst.warning(str(request.num) + 'has not been added, can not remove')
+            return Message_tag(tag = str(request.num) + 'has not been added')
+
         del self.item_emb[request.num]
         self.index.remove_ids(np.array([request.num], dtype=np.int64))
+        g_log_inst._inst.info(str(request.num) + 'remove success')
         return Message_tag(tag = 'remove success')
 
     def get_size(self, request, context):
+        g_log_inst._inst.info('get size success')
         return Message_int(num = self.index.ntotal)
 
     def recall_by_ids(self, request, context):
@@ -79,6 +91,8 @@ class FaissServic(FaissServiceServicer):
         his_ids = json.loads(request.his_ids)
         feat = np.zeros([1,self.PCA_dim]).astype('float32')
         for id in his_ids:
+            if id not in self.item_emb:
+                g_log_inst._inst.debug('recall fail, his_ids not in faiss')
             feat += self.item_emb[id]
         feat /= len(his_ids)
         faiss.normalize_L2(feat)
@@ -90,6 +104,7 @@ class FaissServic(FaissServiceServicer):
             dic = {'id':i, 'score':scores[0][dim_id].item()} 
             # self.item_data[i]['emb'] = self.item_emb[i].tolist()
             res.append(dic)
+        g_log_inst._inst.info('recall success') 
         return Message_json(json_str = json.dumps(res))
 
     def cal_by_ids(self, request, context):
@@ -105,15 +120,20 @@ class FaissServic(FaissServiceServicer):
         ids = json.loads(request.cal_ids)
         feat = np.zeros([1,self.PCA_dim]).astype('float32')
         for id in his_ids:
+            if id not in self.item_emb:
+                g_log_inst._inst.debug('calaculate fail, his_ids not in faiss')
             feat += self.item_emb[id]
         feat /= len(his_ids)
         faiss.normalize_L2(feat)
         res = []
         for id in ids:
+            if id not in self.item_emb:
+                g_log_inst._inst.debug('calaculate fail, ids for calculate not in faiss')
             score = (self.item_emb[id][0] * feat).sum()
             dic = {'id':id, 'score':score.item()} 
             # self.item_data[i]['emb'] = self.item_emb[i].tolist()
             res.append(dic)
+        g_log_inst._inst.info('cal success') 
         return Message_json(json_str = json.dumps(res))
 
         
