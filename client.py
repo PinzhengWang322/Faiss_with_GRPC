@@ -52,6 +52,9 @@ def calculate_simlarity_test():
         cal_time += t2 - t1
     print("120 users' cal time:", cal_time)
     print("Format of the the first three items of the output:", json.loads(out.json_str)[:3])
+    
+def make_backup():
+    client.write(Message_None())
 
 if __name__ == '__main__':
     add_new_items()
@@ -63,3 +66,4 @@ if __name__ == '__main__':
     show_faiss_size()
 
     calculate_simlarity_test()
+    make_backup()
