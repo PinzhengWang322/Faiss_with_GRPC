@@ -7,6 +7,7 @@ import faiss
 import numpy as np
 import json
 from log import g_log_inst
+import os
 g_log_inst.start('logs/test.log', 'INFO')
 
 HOST = "0.0.0.0"
@@ -34,6 +35,12 @@ class FaissServic(FaissServiceServicer):
         self.index = faiss.IndexIDMap(self.index)
         print(X.shape,'init Done!')
         g_log_inst._inst.info('init Done!')
+
+        file_path = os.getcwd() #获得当前工作目录
+        if os.path.exists(file_path + "/backup.npy") and os.path.exists(file_path + "/backup.index"):
+            self.index = faiss.read_index("backup.index")
+            self.item_emb = np.load("backup.npy", allow_pickle=True).item()
+            print('load success')
 
     def add(self, request, context):
         """ Add one item's id and this item's Bert embedding
@@ -93,6 +100,7 @@ class FaissServic(FaissServiceServicer):
         for id in his_ids:
             if id not in self.item_emb:
                 g_log_inst._inst.debug('recall fail, his_ids not in faiss')
+                continue
             feat += self.item_emb[id]
         feat /= len(his_ids)
         faiss.normalize_L2(feat)
@@ -136,8 +144,13 @@ class FaissServic(FaissServiceServicer):
         g_log_inst._inst.info('cal success') 
         return Message_json(json_str = json.dumps(res))
 
+    def write(self, request, context):
+        faiss.write_index(self.index, 'backup.index')
+        np.save('backup.npy', self.item_emb)
+        return Message_tag(tag = 'write success')
+
         
-    
+   
     
 
 def main():
