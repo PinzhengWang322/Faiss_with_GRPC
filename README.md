@@ -86,3 +86,13 @@ cal_by_ids(Message_cal(his_ids, cal_ids)
 ​				   cal_ids(str): 需要计算的id的列表，用json形式存储
 
 返回值：Message_json.json_str,cal_ids中的id和语义相似度得分，例如：[{'id': 776734, 'score': 0.622310996055603}, {'id': 739866, 'score': 0.3671881854534149}, {'id': 745903, 'score': 0.6129276156425476}]
+
+#### 制作备份：
+
+write(Message_None())
+
+定义：对编码和index做备份，存储为当前目录下的backup.index和backup.npy
+
+输入参数：无
+
+返回值：如果备份成功，返回Message_tag(tag = 'remove success')
