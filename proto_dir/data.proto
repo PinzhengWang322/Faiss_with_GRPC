@@ -7,6 +7,7 @@ service FaissService {
     rpc get_size (Message_None) returns (Message_int){}
     rpc recall_by_ids (Message_recall) returns (Message_json){}
     rpc cal_by_ids (Message_cal) returns (Message_json){}
+    rpc write (Message_None) returns (Message_tag){}
 }
 
 message Message_add {
