@@ -39,6 +39,11 @@ class FaissServiceStub(object):
                 request_serializer=data__pb2.Message_cal.SerializeToString,
                 response_deserializer=data__pb2.Message_json.FromString,
                 )
+        self.write = channel.unary_unary(
+                '/faissrpc_service.FaissService/write',
+                request_serializer=data__pb2.Message_None.SerializeToString,
+                response_deserializer=data__pb2.Message_tag.FromString,
+                )
 
 
 class FaissServiceServicer(object):
@@ -74,6 +79,12 @@ class FaissServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def write(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_FaissServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -101,6 +112,11 @@ def add_FaissServiceServicer_to_server(servicer, server):
                     servicer.cal_by_ids,
                     request_deserializer=data__pb2.Message_cal.FromString,
                     response_serializer=data__pb2.Message_json.SerializeToString,
+            ),
+            'write': grpc.unary_unary_rpc_method_handler(
+                    servicer.write,
+                    request_deserializer=data__pb2.Message_None.FromString,
+                    response_serializer=data__pb2.Message_tag.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -194,5 +210,22 @@ class FaissService(object):
         return grpc.experimental.unary_unary(request, target, '/faissrpc_service.FaissService/cal_by_ids',
             data__pb2.Message_cal.SerializeToString,
             data__pb2.Message_json.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def write(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/faissrpc_service.FaissService/write',
+            data__pb2.Message_None.SerializeToString,
+            data__pb2.Message_tag.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
