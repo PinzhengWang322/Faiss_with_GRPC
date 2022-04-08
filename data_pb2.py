@@ -14,7 +14,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\ndata.proto\x12\x10\x66\x61issrpc_service\"&\n\x0bMessage_add\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0b\n\x03\x65mb\x18\x02 \x01(\t\"\x0e\n\x0cMessage_None\"\x1a\n\x0bMessage_int\x12\x0b\n\x03num\x18\x01 \x01(\x03\"/\n\x0eMessage_recall\x12\x0f\n\x07his_ids\x18\x01 \x01(\t\x12\x0c\n\x04topk\x18\x02 \x01(\x05\" \n\x0cMessage_json\x12\x10\n\x08json_str\x18\x01 \x01(\t\"/\n\x0bMessage_cal\x12\x0f\n\x07his_ids\x18\x01 \x01(\t\x12\x0f\n\x07\x63\x61l_ids\x18\x02 \x01(\t\"\x1a\n\x0bMessage_tag\x12\x0b\n\x03tag\x18\x01 \x01(\t2\x90\x03\n\x0c\x46\x61issService\x12\x45\n\x03\x61\x64\x64\x12\x1d.faissrpc_service.Message_add\x1a\x1d.faissrpc_service.Message_tag\"\x00\x12H\n\x06remove\x12\x1d.faissrpc_service.Message_int\x1a\x1d.faissrpc_service.Message_tag\"\x00\x12K\n\x08get_size\x12\x1e.faissrpc_service.Message_None\x1a\x1d.faissrpc_service.Message_int\"\x00\x12S\n\rrecall_by_ids\x12 .faissrpc_service.Message_recall\x1a\x1e.faissrpc_service.Message_json\"\x00\x12M\n\ncal_by_ids\x12\x1d.faissrpc_service.Message_cal\x1a\x1e.faissrpc_service.Message_json\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\ndata.proto\x12\x10\x66\x61issrpc_service\"&\n\x0bMessage_add\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0b\n\x03\x65mb\x18\x02 \x01(\t\"\x0e\n\x0cMessage_None\"\x1a\n\x0bMessage_int\x12\x0b\n\x03num\x18\x01 \x01(\x03\"/\n\x0eMessage_recall\x12\x0f\n\x07his_ids\x18\x01 \x01(\t\x12\x0c\n\x04topk\x18\x02 \x01(\x05\" \n\x0cMessage_json\x12\x10\n\x08json_str\x18\x01 \x01(\t\"/\n\x0bMessage_cal\x12\x0f\n\x07his_ids\x18\x01 \x01(\t\x12\x0f\n\x07\x63\x61l_ids\x18\x02 \x01(\t\"\x1a\n\x0bMessage_tag\x12\x0b\n\x03tag\x18\x01 \x01(\t2\xda\x03\n\x0c\x46\x61issService\x12\x45\n\x03\x61\x64\x64\x12\x1d.faissrpc_service.Message_add\x1a\x1d.faissrpc_service.Message_tag\"\x00\x12H\n\x06remove\x12\x1d.faissrpc_service.Message_int\x1a\x1d.faissrpc_service.Message_tag\"\x00\x12K\n\x08get_size\x12\x1e.faissrpc_service.Message_None\x1a\x1d.faissrpc_service.Message_int\"\x00\x12S\n\rrecall_by_ids\x12 .faissrpc_service.Message_recall\x1a\x1e.faissrpc_service.Message_json\"\x00\x12M\n\ncal_by_ids\x12\x1d.faissrpc_service.Message_cal\x1a\x1e.faissrpc_service.Message_json\"\x00\x12H\n\x05write\x12\x1e.faissrpc_service.Message_None\x1a\x1d.faissrpc_service.Message_tag\"\x00\x62\x06proto3')
 
 
 
@@ -93,5 +93,5 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _MESSAGE_TAG._serialized_start=248
   _MESSAGE_TAG._serialized_end=274
   _FAISSSERVICE._serialized_start=277
-  _FAISSSERVICE._serialized_end=677
+  _FAISSSERVICE._serialized_end=751
 # @@protoc_insertion_point(module_scope)
