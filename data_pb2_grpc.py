@@ -229,3 +229,6 @@ class FaissService(object):
             data__pb2.Message_tag.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    
+    
