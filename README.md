@@ -26,7 +26,7 @@ python -m grpc_tools.protoc -I=proto_dir --python_out=. --grpc_python_out=. data
 
 #### 新帖入库接口：
 
-add (Message_add(id, ebm)):
+add (Message_add(id, emb)):
 
 定义：添加新项目的id和它内容的Bert编码
 
@@ -96,3 +96,44 @@ write(Message_None())
 输入参数：无
 
 返回值：如果备份成功，返回Message_tag(tag = 'remove success')
+
+
+##4.24 更新
+**更新了add功能，在加入新项目时可以增加项目的创建时间戳(ms)。**
+add (Message_add(id, emb, time)):
+
+定义：添加新项目的id和它内容的Bert编码
+
+输入参数：id(int64):新项目的id              
+        emb(str):新项目内容的Bert编码列表形式，以json形式存储
+        time(int64):新项目的创建时间。如果缺省，以调用的时间戳作为该项目的创建时间。          
+
+返回值：如果新增成功，返回Message_tag(tag = 'add success')
+
+
+**更新了recall功能，在召回语义项目时可以多少天以内的条件限制。**
+recall(Message_recall(his_ids , topk, time))
+
+定义：根据history_ids召回topk个语义相似的项目
+
+输入参数：his_ids(str): 用户历史id的列表，用json形式存储
+
+        topk(int32): 召回topk个语义相似的项目
+        
+        time(in32): 以天数作为单位，过滤距今天数大于time天的项目。
+
+返回值：Message_json.json_str, 召回的用户id和语义相似度得分，例如：[{'id': 776734, 'score': 0.6223110556602478}, {'id': 764666, 'score': 0.6223109364509583}, {'id': 745903, 'score': 0.6129276752471924}]
+
+由于faiss库对时间的优化比较高，所以不支持条件过滤的topk检索。目前只能检索topk个，然后过滤掉不符合条件的项目。https://github.com/facebookresearch/faiss/issues/40
+
+**更新了备份和删除机制**
+删除时，只删除faiss库中的index，从而保证检索时间不会因数据量的增加而变大。而存储入过库的item的编码信息的内存不会进行删除，保证可以进行召回。在入库新内容备份时，对于item的编码等信息追加备份到backup.txt文件中，对于faiss的index的信息整体备份到backup.index文件中。
+
+**remove.py 脚本每日删除过期item**
+在启动remove.p后会立刻根据备份的backup.txt文件删除faiss中过期的item。然后，每日凌晨四点定时根据备份的backup.txt文件删除faiss中过期的item。
+
+**注意事项**
+如果需要一次性加入大量item(例如初始化时加入百万项目），建议先注释serve.py的第89行，**在全部加入完后调用write(Message_None())接口**备份。之后取消serve.py的第89行的注释，重启服务，并启用remove.py删除超过一个月的item。
+
+
+
