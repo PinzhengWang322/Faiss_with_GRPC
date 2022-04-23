@@ -86,7 +86,7 @@ class FaissServic(FaissServiceServicer):
         
         g_log_inst._inst.info(str(request.id) + 'add success')
         
-        # self.write(None, None) # If you need to add a lot of items at once, comment this line out
+        self.write(None, None) # If you need to add a lot of items at once, comment this line out
 
         self.file.write(json.dumps({'id': id, 'time': i_time, 'emb': Bert_embedding.tolist()}) + '\n')
         g_log_inst._inst.info(str(request.id) + 'backup success')
