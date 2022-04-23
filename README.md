@@ -106,8 +106,10 @@ add (Message_add(id, emb, time)):
 
 定义：添加新项目的id和它内容的Bert编码
 
-输入参数：id(int64):新项目的id              
+输入参数：id(int64):新项目的id
+
         emb(str):新项目内容的Bert编码列表形式，以json形式存储
+        
         time(int64):新项目的创建时间。如果缺省，以调用的时间戳作为该项目的创建时间。          
 
 返回值：如果新增成功，返回Message_tag(tag = 'add success')
