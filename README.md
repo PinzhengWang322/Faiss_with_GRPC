@@ -106,7 +106,8 @@ add (Message_add(id, emb, time)):
 
 定义：添加新项目的id和它内容的Bert编码
 
-输入参数：id(int64):新项目的id
+输入参数：
+        id(int64):新项目的id
 
         emb(str):新项目内容的Bert编码列表形式，以json形式存储
         
@@ -121,7 +122,8 @@ recall(Message_recall(his_ids , topk, time))
 
 定义：根据history_ids召回topk个语义相似的项目
 
-输入参数：his_ids(str): 用户历史id的列表，用json形式存储
+输入参数：
+        his_ids(str): 用户历史id的列表，用json形式存储
 
         topk(int32): 召回topk个语义相似的项目
         
