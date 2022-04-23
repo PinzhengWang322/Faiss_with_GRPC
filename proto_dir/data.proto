@@ -13,6 +13,7 @@ service FaissService {
 message Message_add {
     int64 id = 1;
     string emb = 2;
+    int64 time = 3;
 }
 
 message Message_None {
@@ -25,6 +26,7 @@ message Message_int {
 message Message_recall {
     string his_ids = 1;
     int32 topk = 2;
+    int32 time = 3;
 }
 
 message Message_json {
