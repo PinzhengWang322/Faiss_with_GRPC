@@ -100,6 +100,7 @@ write(Message_None())
 
 ##4.24 更新
 **更新了add功能，在加入新项目时可以增加项目的创建时间戳(ms)。**
+
 add (Message_add(id, emb, time)):
 
 定义：添加新项目的id和它内容的Bert编码
@@ -112,6 +113,7 @@ add (Message_add(id, emb, time)):
 
 
 **更新了recall功能，在召回语义项目时可以多少天以内的条件限制。**
+
 recall(Message_recall(his_ids , topk, time))
 
 定义：根据history_ids召回topk个语义相似的项目
@@ -127,12 +129,15 @@ recall(Message_recall(his_ids , topk, time))
 由于faiss库对时间的优化比较高，所以不支持条件过滤的topk检索。目前只能检索topk个，然后过滤掉不符合条件的项目。https://github.com/facebookresearch/faiss/issues/40
 
 **更新了备份和删除机制**
+
 删除时，只删除faiss库中的index，从而保证检索时间不会因数据量的增加而变大。而存储入过库的item的编码信息的内存不会进行删除，保证可以进行召回。在入库新内容备份时，对于item的编码等信息追加备份到backup.txt文件中，对于faiss的index的信息整体备份到backup.index文件中。
 
 **remove.py 脚本每日删除过期item**
+
 在启动remove.p后会立刻根据备份的backup.txt文件删除faiss中过期的item。然后，每日凌晨四点定时根据备份的backup.txt文件删除faiss中过期的item。
 
 **注意事项**
+
 如果需要一次性加入大量item(例如初始化时加入百万项目），建议先注释serve.py的第89行，**在全部加入完后调用write(Message_None())接口**备份。之后取消serve.py的第89行的注释，重启服务，并启用remove.py删除超过一个月的item。
 
 
