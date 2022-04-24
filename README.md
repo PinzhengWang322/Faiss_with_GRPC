@@ -95,7 +95,7 @@ write(Message_None())
 
 输入参数：无
 
-返回值：如果备份成功，返回Message_tag(tag = 'remove success')
+返回值：如果备份成功，返回Message_tag(tag = 'write success')
 
 
 ## 4.24 更新
