@@ -47,8 +47,10 @@ class FaissServic(FaissServiceServicer):
 
             while line: 
                 line_dic = json.loads(line)
-                self.item_emb[line_dic['id']] = np.array(line_dic['emb'])
-                self.item_time[line_dic['id']] = line_dic['time']
+                now_ms = int(round(time.time() * 1000))
+                if now_ms - line_dic['time'] <= self.day_ms * 180:
+                    self.item_emb[line_dic['id']] = np.array(line_dic['emb'])
+                    self.item_time[line_dic['id']] = line_dic['time']
                 line = f.readline() 
             f.close() 
 
@@ -86,17 +88,33 @@ class FaissServic(FaissServiceServicer):
         
         g_log_inst._inst.info(str(request.id) + 'add success')
         
-        self.write(None, None) # If you need to add a lot of items at once, comment this line out
+        # self.write(None, None) # If you need to add a lot of items at once, comment this line out
 
         self.file.write(json.dumps({'id': id, 'time': i_time, 'emb': Bert_embedding.tolist()}) + '\n')
         g_log_inst._inst.info(str(request.id) + 'backup success')
         
         return Message_tag(tag = 'add success')
 
-    def remove(self, request, context):
+    def remove_index(self, request, context):
         """ Remove the item with the input id
         Args:
-            request.json: The id to be removed
+            request.json: The id to be removed in index
+
+        Returns: 
+            None
+        """
+        # if request.num not in self.item_emb: 
+        #     g_log_inst._inst.warning(str(request.num) + 'has not been added, can not remove')
+        #     return Message_tag(tag = str(request.num) + 'has not been added')
+
+        self.index.remove_ids(np.array([request.num], dtype=np.int64))
+        g_log_inst._inst.info(str(request.num) + 'remove index success')
+        return Message_tag(tag = 'remove success')
+
+    def remove_memory(self, request, context):
+        """ Remove the item with the input id
+        Args:
+            request.json: The id to be removed in memory
 
         Returns: 
             None
@@ -105,9 +123,10 @@ class FaissServic(FaissServiceServicer):
             g_log_inst._inst.warning(str(request.num) + 'has not been added, can not remove')
             return Message_tag(tag = str(request.num) + 'has not been added')
 
-        # del self.item_emb[request.num]
-        self.index.remove_ids(np.array([request.num], dtype=np.int64))
-        g_log_inst._inst.info(str(request.num) + 'remove success')
+        del self.item_emb[request.num]
+        del self.item_time[request.num]
+
+        g_log_inst._inst.info(str(request.num) + 'remove memory success')
         return Message_tag(tag = 'remove success')
 
     def get_size(self, request, context):
