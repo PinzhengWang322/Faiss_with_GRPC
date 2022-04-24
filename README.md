@@ -138,7 +138,7 @@ recall(Message_recall(his_ids , topk, time))
 **更新了备份和删除机制**
 
 删除时，只删除faiss库中的index，从而保证检索时间不会因数据量的增加而变大。而存储入过库的item的编码信息的内存删除大于180天的，尽量可以进行召回。在入库新内容备份时，对于item的编码等信息追加备份到backup.txt文件中，对于faiss的index的信息整体备份到backup.index文件中。
-输入参数：
+
 
 **remove.py 脚本每日删除过期item**
 
