@@ -19,8 +19,13 @@ class FaissServiceStub(object):
                 request_serializer=data__pb2.Message_add.SerializeToString,
                 response_deserializer=data__pb2.Message_tag.FromString,
                 )
-        self.remove = channel.unary_unary(
-                '/faissrpc_service.FaissService/remove',
+        self.remove_index = channel.unary_unary(
+                '/faissrpc_service.FaissService/remove_index',
+                request_serializer=data__pb2.Message_int.SerializeToString,
+                response_deserializer=data__pb2.Message_tag.FromString,
+                )
+        self.remove_memory = channel.unary_unary(
+                '/faissrpc_service.FaissService/remove_memory',
                 request_serializer=data__pb2.Message_int.SerializeToString,
                 response_deserializer=data__pb2.Message_tag.FromString,
                 )
@@ -55,7 +60,13 @@ class FaissServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def remove(self, request, context):
+    def remove_index(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def remove_memory(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -93,8 +104,13 @@ def add_FaissServiceServicer_to_server(servicer, server):
                     request_deserializer=data__pb2.Message_add.FromString,
                     response_serializer=data__pb2.Message_tag.SerializeToString,
             ),
-            'remove': grpc.unary_unary_rpc_method_handler(
-                    servicer.remove,
+            'remove_index': grpc.unary_unary_rpc_method_handler(
+                    servicer.remove_index,
+                    request_deserializer=data__pb2.Message_int.FromString,
+                    response_serializer=data__pb2.Message_tag.SerializeToString,
+            ),
+            'remove_memory': grpc.unary_unary_rpc_method_handler(
+                    servicer.remove_memory,
                     request_deserializer=data__pb2.Message_int.FromString,
                     response_serializer=data__pb2.Message_tag.SerializeToString,
             ),
@@ -146,7 +162,7 @@ class FaissService(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def remove(request,
+    def remove_index(request,
             target,
             options=(),
             channel_credentials=None,
@@ -156,7 +172,24 @@ class FaissService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/faissrpc_service.FaissService/remove',
+        return grpc.experimental.unary_unary(request, target, '/faissrpc_service.FaissService/remove_index',
+            data__pb2.Message_int.SerializeToString,
+            data__pb2.Message_tag.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def remove_memory(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/faissrpc_service.FaissService/remove_memory',
             data__pb2.Message_int.SerializeToString,
             data__pb2.Message_tag.FromString,
             options, channel_credentials,
@@ -229,6 +262,3 @@ class FaissService(object):
             data__pb2.Message_tag.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    
-    
