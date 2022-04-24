@@ -38,16 +38,19 @@ def remove():
     
     f.close() 
     np.save("have_removed.npy", [index_removed, memory_removed])
-    client.remove_memory(Message_None())
+    
     print("remove success")
 
 def main():
     remove()
+    client.write(Message_None())
     
 
 
 
 
 if __name__ == '__main__':
+    t1 = time.time()
     main()
-    
+    t2 = time.time()
+    print(t2 - t1)
