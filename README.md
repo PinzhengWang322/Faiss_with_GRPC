@@ -114,7 +114,7 @@ add (Message_add(id, emb, time)):
         
         time(int64):新项目的创建时间。如果缺省，以调用的时间戳作为该项目的创建时间。          
 
-返回值：如果新增成功，返回Message_tag(tag = 'add success')
+返回值：如果新增成功，返回Message_tag(tag = 'add success')。**更新时不再备份index，需要调用write**
 
 
 **更新了recall功能，在召回语义项目时可以多少天以内的条件限制。**
@@ -141,11 +141,9 @@ recall(Message_recall(his_ids , topk, time))
 
 **remove.py 脚本每日删除过期item**
 
-在启动remove.p后会立刻根据备份的backup.txt文件删除faiss中过期的item。然后，每日凌晨四点定时根据备份的backup.txt文件删除faiss中过期的item。
+在启动remove.p后会立刻根据备份的backup.txt文件删除faiss中过期的item（index删除>30天的，memory删除>180天的。remove后会备份index。由于backup.txt数量很多，所以每次会记录已经删除过的item并存在have_removed.npy下。这样已经删除过的项目就不必要每次启动remove.py时打扰faiss服务。6w条item删除2w条item耗时一分钟左右，耗时不会太长。
 
-**注意事项**
 
-如果需要一次性加入大量item(例如初始化时加入百万项目），建议先注释serve.py的第89行，**在全部加入完后调用write(Message_None())接口**备份。之后取消serve.py的第89行的注释，重启服务，并启用remove.py删除超过一个月的item。
 
 
 
